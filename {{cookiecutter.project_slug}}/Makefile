@@ -9,8 +9,6 @@ all: clean test install run deploy down
 install: generate_dot_env
 	pip install --upgrade pip
 	pip install poetry
-	poetry config virtualenvs.in-project true
-	poetry env use python3
 	poetry update
 	poetry install --with dev
 	poetry shell

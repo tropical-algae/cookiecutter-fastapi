@@ -4,7 +4,7 @@ ARG WORKSPACE=/workspace
 
 WORKDIR ${WORKSPACE}
 
-COPY poetry.lock pyproject.toml .env ./
+COPY poetry.lock pyproject.toml poetry.toml .env ./
 
 RUN pip install --upgrade pip && \
     pip install poetry && \
