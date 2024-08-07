@@ -25,5 +25,7 @@ pip install cookiecutter
 **Generate a FastAPI Project**
 
 ```sh
-cookiecutter XXX
+cookiecutter git@github.com:LINXIAXING/cookiecutter-fastapi.git
 ```
+
+![image](https://github.com/LINXIAXING/cookiecutter-fastapi/blob/main/assert/example.png)
