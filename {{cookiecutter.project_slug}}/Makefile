@@ -6,8 +6,7 @@ SHELL := /bin/bash
 
 all: clean test install run deploy down
 
-install: 
-	generate_dot_env
+install: generate_dot_env
 	pip install --upgrade pip
 	pip install poetry
 	poetry config virtualenvs.in-project true
@@ -19,8 +18,7 @@ install:
 activate:
 	poetry shell
 
-deploy: 
-	generate_dot_env
+deploy: generate_dot_env
 	docker-compose build
 	docker-compose up -d
 
