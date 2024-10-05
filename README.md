@@ -25,7 +25,7 @@ pip install cookiecutter
 **Generate a FastAPI Project**
 
 ```sh
-cookiecutter git@github.com:LINXIAXING/cookiecutter-fastapi.git
+cookiecutter https://github.com/tropical-algae/cookiecutter-fastapi.git
 ```
 
-![image](https://github.com/LINXIAXING/cookiecutter-fastapi/blob/main/assert/example.png)
+![image](https://github.com/tropical-algae/cookiecutter-fastapi/blob/main/assert/example.png)

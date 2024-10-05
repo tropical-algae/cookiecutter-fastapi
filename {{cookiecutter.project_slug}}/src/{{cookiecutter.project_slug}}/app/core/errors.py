@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Union
+from typing import Union
 
 import pytz
 from fastapi import FastAPI

@@ -5,18 +5,18 @@ from typing import Union
 
 from openai import OpenAI
 
-from app.core.config import Setting
-from utils.util import load_yaml
+from {{cookiecutter.project_slug}}.common.config import settings
+from {{cookiecutter.project_slug}}.common.util import load_yaml
 
 
 class ChatGPT:
-    def __init__(self, setting: Setting) -> None:
-        self.setting: Setting = setting
+    def __init__(self) -> None:
+        self.settings = settings
         self.prompt: str = self._load_prompt()
-        self.client = OpenAI(base_url=setting.GPT_BASE_URL, api_key=setting.GPT_API_KEY)
+        self.client = OpenAI(base_url=settings.GPT_BASE_URL, api_key=settings.GPT_API_KEY)
 
     def _load_prompt(self) -> str:
-        return load_yaml(self.setting.GPT_PROMPT_TEMPLATE_PATH)["instruct"]
+        return load_yaml(self.settings.GPT_PROMPT_TEMPLATE_PATH)["instruct"]
 
     def _set_prompt(self, input: Union[dict, str]) -> str:
         def replacer(match, params: dict):
@@ -28,7 +28,7 @@ class ChatGPT:
             return {k: str(v) for k, v in params.items()}
 
         # def complete_params(params: dict):
-        #     return {**self.setting["INPUT_DEFAULT_PARAMS"], **params}
+        #     return {**self.settings["INPUT_DEFAULT_PARAMS"], **params}
 
         # params = complete_params({"input": input}) if isinstance(input, str) else complete_params(input)
         params = standardization(input)
@@ -42,16 +42,17 @@ class ChatGPT:
         ]
         response = self.client.chat.completions.create(
             messages=messages,  # type: ignore
-            model=self.setting.GPT_MODEL,
-            temperature=self.setting.GPT_TEMPERATURE,
-            response_format=self.setting.GPT_RESPONSE_FORMAT,
+            model=self.settings.GPT_MODEL,
+            temperature=self.settings.GPT_TEMPERATURE,
+            response_format=self.settings.GPT_RESPONSE_FORMAT,
         )
-        return response.choices[0].message.content
+        result = response.choices[0].message.content
+        return result if result else ""
 
 
 class EventExtraGPT(ChatGPT):
-    def __init__(self, setting: Setting, logger: Logger) -> None:
-        super().__init__(setting)
+    def __init__(self, logger: Logger) -> None:
+        super().__init__()
         self.logger = logger
 
     def run(self, input: dict) -> str:

@@ -13,8 +13,8 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 
-from app.core.config import Setting
-from service.openapi_model import EventExtraGPT
+from {{cookiecutter.project_slug}}.common.config import settings
+from {{cookiecutter.project_slug}}.service.openapi_model import EventExtraGPT
 
 origins = ["*"]
 
@@ -44,24 +44,20 @@ def resp_error(response_body: dict) -> Response:
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI, setting: Setting, logger: logging.Logger):  # collects GPU memory
-    app.state.setting = setting
-    app.state.logger = logger
-
+async def lifespan(app: FastAPI, logger: logging.Logger):
     logger.info("Starting service...")
     logger.info("Loading event extraction model...")
-    app.state.eventgpt = EventExtraGPT(setting=setting, logger=logger)
-    # command.upgrade(Config("alembic.ini"), "head")
+    app.state.eventgpt = EventExtraGPT(logger=logger)
 
     yield
     logger.info("Shut down and clear cache...")
 
 
-def add_middleware(app: FastAPI, setting: Setting):
+def add_middleware(app: FastAPI):
     async def log_response(request: Request, call_next):
         response = await call_next(request)
         # return directly if not an api endpoint
-        is_not_api: bool = not request.url.path.startswith(setting.API_PREFIX)
+        is_not_api: bool = not request.url.path.startswith(settings.API_PREFIX)
         is_access: bool = request.url.path.endswith("access-token")
         if is_access or is_not_api:
             return response

@@ -1,6 +1,8 @@
 import pytest
 from fastapi.testclient import TestClient
-from src import setting
+from {{cookiecutter.project_slug}}.common.config import settings
+
+from tests.conftest import DataStore
 
 complete_input_zh = {
     "event_args": ["时间", "地点", "事件主体", "事件客体", "事件影响"],
@@ -15,13 +17,14 @@ complete_input_en = {
 }
 
 
-@pytest.mark.run(order=1)
+@pytest.mark.run(order=2)
 @pytest.mark.parametrize(
     "data",
     [complete_input_zh, complete_input_en],
 )
-def test_eventgpt_complete_api(client: TestClient, data: dict):
-    url = f"{setting.API_PREFIX}/v1/eventgpt/complete"
-    response = client.post(url=url, json=data)
+def test_eventgpt_complete_api(client: TestClient, data_store: DataStore, data: dict):
+    header = {"Authorization": f"Bearer {data_store.admin_token_data}"}
+    url = f"{settings.API_PREFIX}/eventgpt/complete"
+    response = client.post(url=url, headers=header, json=data)
     assert response.status_code == 200
     assert response.json()["status"] == 200

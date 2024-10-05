@@ -29,12 +29,12 @@ generate_dot_env:
 	fi
 
 clean:
-	@find . -name '*.pyc' -exec rm -rf {} \;
-	@find . -name '__pycache__' -exec rm -rf {} \;
-	@find . -name 'Thumbs.db' -exec rm -rf {} \;
-	@find . -name '*~' -exec rm -rf {} \;
-	@find . -name '*.egg' -exec rm -f {} \;
-	@find . -name '*.egg-info' -exec rm -rf {} \;
+	@find ./src ./tests -name '*.pyc' -exec rm -rf {} \; || true
+	@find ./src ./tests -name '__pycache__' -exec rm -rf {} \; || true
+	@find ./src ./tests -name 'Thumbs.db' -exec rm -rf {} \; || true
+	@find ./src ./tests -name '*~' -exec rm -rf {} \; || true
+	@find ./src ./tests -name '*.egg' -exec rm -f {} \; || true
+	@find ./src ./tests -name '*.egg-info' -exec rm -rf {} \; || true
 	rm -rf build/;
 	rm -rf dist/;
 	rm -rf .eggs/;
@@ -44,6 +44,6 @@ clean:
 	rm -fr .pytest_cache;
 	rm -f report.xml;
 	rm -f cov.xml;
-	rm -fr .mypy_cache;
-	rm -fr .ruff_cache;
+	rm -rf .mypy_cache;
+	rm -rf .ruff_cache;
 	rm -rf .cache;
