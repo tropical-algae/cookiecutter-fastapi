@@ -32,7 +32,7 @@ class Setting(BaseSettings):
     GPT_PROMPT_TEMPLATE_PATH: str = ""
     GPT_BASE_URL: str = ""
     GPT_API_KEY: str = ""
-    GPT_MODEL: str = ""
+    GPT_DEFAULT_MODEL: str = "gpt-3.5-turbo-ca"
     GPT_TEMPERATURE: float = 0.8
     GPT_RESPONSE_FORMAT: dict = {"type": "json_object"}
 

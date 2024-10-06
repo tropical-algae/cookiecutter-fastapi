@@ -33,7 +33,7 @@ def set_handler_no_color(config: dict, formatter_key: str, handlers_key: str, **
     config["handlers"][handlers_key].update({"formatter": formatter_key, **kwargs})
 
 
-def set_handler_with_color(config: dict, formatter_key: str, handlers_key: str, **kwargs):
+def set_handler_with_color(config: dict, formatter_key: str, handlers_key: str, **kwargs) -> None:
     set_handler_no_color(config, formatter_key, handlers_key, **kwargs)
     config["formatters"][formatter_key].update(
         {

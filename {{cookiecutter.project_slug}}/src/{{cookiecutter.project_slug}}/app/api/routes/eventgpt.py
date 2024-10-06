@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import APIRouter, HTTPException, Request, Security
 
 from {{cookiecutter.project_slug}}.app.api import deps
@@ -8,7 +10,7 @@ from {{cookiecutter.project_slug}}.app.models.model_eventgpt import (
 )
 from {{cookiecutter.project_slug}}.app.services.service_eventgpt import parse_event_2_dict
 from {{cookiecutter.project_slug}}.common.logging import logger
-from {{cookiecutter.project_slug}}.service.openapi_model import EventExtraGPT
+from {{cookiecutter.project_slug}}.service.llm.openai import EventExtraGPT
 
 router = APIRouter()
 
@@ -18,11 +20,11 @@ async def predict(
     data_input: EventExtraRequest,
     request: Request,
     current_user: schemas.User = Security(deps.get_current_user, scopes=["ADMIN", "USER"]),
-):
+) -> Any:
     model: EventExtraGPT = request.app.state.eventgpt
 
     try:
-        output = parse_event_2_dict(model=model, input=data_input, user=current_user)
+        output = await parse_event_2_dict(model=model, request=data_input, user=current_user)
         if output is None:
             raise HTTPException(
                 status_code=500,

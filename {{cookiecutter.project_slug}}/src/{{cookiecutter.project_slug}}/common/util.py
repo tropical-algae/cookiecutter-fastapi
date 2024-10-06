@@ -12,7 +12,7 @@ def generate_filepath(filename: str, filepath: str) -> str:
     return os.path.join(filepath, filename)
 
 
-def load_yaml(yaml_path: str):
+def load_yaml(yaml_path: str) -> dict:
     try:
         with open(yaml_path) as yaml_file:
             return yaml.safe_load(yaml_file)

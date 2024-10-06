@@ -12,7 +12,7 @@ UpdateModelType = TypeVar("UpdateModelType", bound=BaseModel)
 
 
 class CRUDBase(Generic[ModelType, CreateModelType, UpdateModelType]):
-    def __init__(self, model: type[ModelType]):
+    def __init__(self, model: type[ModelType]) -> None:
         """
         CRUD object with default methods to Create, Read, Update, Delete (CRUD).
 
