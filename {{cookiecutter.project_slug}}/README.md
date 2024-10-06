@@ -18,13 +18,19 @@ Install poetry, download dependencies, and activate the poetry development envir
 make install
 ```
 
+To start from the terminal again, you need to activate the environment first:
+
+```sh
+make activate
+```
+
 ### Configure your `.env`
 
-After executing the `make install` command, you will enter the virtual environment of Poetry and find a `.env` configuration file under the project. Before starting the project, please complete the configuration first.
+Before starting the project, please complete the configuration first.
 
-For more configurations, please check [HERE](src/app/core/config.py)
+[.env.example](.env.example) is a sample configuration, for more configurations, please check [HERE](src/happychat/common/config.py)
 
-## Runnning
+### Runnning
 
 Start your system with the following command:
 
@@ -48,6 +54,15 @@ poetry check-test
 poetry clean
 ```
 
+### Database visioning
+
+When the database schema changes, create a new version promptly.
+
+```sh
+alembic upgrade head
+alembic revision --autogenerate -m ""
+```
+
 ## Access Swagger Documentation
 
 > <http://localhost:8080/docs>
@@ -60,41 +75,79 @@ Files related to application are in the `src` or `tests` directories.
 
 Overall includes:
 
-    Project
+    .
+    ├── .env.example
+    ├── .gitignore
+    ├── .pylintrc
+    ├── alembic.ini
+    ├── docker-compose.yml
+    ├── Dockerfile
+    ├── Makefile
+    ├── poetry.lock
+    ├── poetry.toml
+    ├── pyproject.toml
+    ├── README.md
     ├── src
-    │   ├── app
-    │   │   ├── api
-    │   │   │   ├── api.py
-    │   │   │   ├── __init__.py
-    │   │   │   └── routes
-    │   │   │       ├── eventgpt.py
-    │   │   │       └── __init__.py
-    │   │   ├── core
-    │   │   │   ├── config.py
-    │   │   │   ├── errors.py
-    │   │   │   ├── events.py
-    │   │   │   ├── __init__.py
-    │   │   │   └── logging.py
-    │   │   ├── __init__.py
-    │   │   ├── models
-    │   │   │   ├── eventgpt.py
-    │   │   │   └── __init__.py
-    │   │   └── services
-    │   │       ├── eventgpt.py
-    │   │       └── __init__.py
-    │   ├── __init__.py
-    │   ├── main.py
-    │   ├── service
-    │   │   ├── __init__.py
-    │   │   ├── openapi_model.py
-    │   │   └── prompts
-    │   │       └── eventgpt_prompt.yaml
-    │   └── utils
+    │   └── happychat
+    │       ├── alembic
+    │       │   ├── env.py
+    │       │   ├── README
+    │       │   ├── script.py.mako
+    │       │   └── versions
+    │       │       └── 5ebcc51b7b42_update_create_user_table.py
+    │       ├── app
+    │       │   ├── api
+    │       │   │   ├── api.py
+    │       │   │   ├── deps.py
+    │       │   │   ├── __init__.py
+    │       │   │   └── routes
+    │       │   │       ├── eventgpt.py
+    │       │   │       ├── __init__.py
+    │       │   │       └── user.py
+    │       │   ├── core
+    │       │   │   ├── constant.py
+    │       │   │   ├── errors.py
+    │       │   │   ├── events.py
+    │       │   │   ├── __init__.py
+    │       │   │   └── security.py
+    │       │   ├── db
+    │       │   │   ├── crud
+    │       │   │   │   ├── base.py
+    │       │   │   │   ├── crud_user.py
+    │       │   │   │   └── __init__.py
+    │       │   │   ├── __init__.py
+    │       │   │   ├── schemas
+    │       │   │   │   ├── base.py
+    │       │   │   │   ├── __init__.py
+    │       │   │   │   └── schema_user.py
+    │       │   │   └── session.py
+    │       │   ├── __init__.py
+    │       │   ├── models
+    │       │   │   ├── __init__.py
+    │       │   │   ├── model_eventgpt.py
+    │       │   │   └── model_user.py
+    │       │   └── services
+    │       │       ├── __init__.py
+    │       │       └── service_eventgpt.py
+    │       ├── common
+    │       │   ├── config.py
+    │       │   ├── __init__.py
+    │       │   ├── logging.py
+    │       │   └── util.py
     │       ├── __init__.py
-    │       └── util.py
+    │       ├── main.py
+    │       └── service
+    │           ├── __init__.py
+    │           ├── llm
+    │           │   ├── base.py
+    │           │   ├── __init__.py
+    │           │   └── openai.py
+    │           └── prompts
+    │               └── eventgpt_prompt.yaml
     └── tests
         ├── api
         │   ├── __init__.py
-        │   └── test_eventgpt.py
+        │   ├── test_eventgpt.py
+        │   └── test_user.py
         ├── conftest.py
         └── __init__.py
