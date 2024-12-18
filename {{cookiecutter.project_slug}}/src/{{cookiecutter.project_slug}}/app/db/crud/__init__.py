@@ -1,3 +1,3 @@
-from .crud_user import user
+from .crud_user import *
 
-__all__ = ["user"]
+# __all__ = ["user"]

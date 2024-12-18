@@ -8,7 +8,7 @@ Cookiecutter is a CLI tool (Command Line Interface) to create an application boi
 
 ## What's Included in the Template?
 
-This is a project based entirely on `poetry` for package management, and the system mainly includes the following tools: **Poetry**, **FastAPI**, **MyPY**, **PyTest**, **Ruff**, **Docker**, **Docker-Compose**
+This is a project based entirely on `poetry` for package management, and the system mainly includes the following tools: **Poetry**, **FastAPI**, **MyPY**, **PyTest**, **Ruff**, **Docker**, **Docker-Compose**, **Sqlacodegen**, **SqlModel**
 
 >We expect to integrate `MySQL` into templates in the future for better development.
 

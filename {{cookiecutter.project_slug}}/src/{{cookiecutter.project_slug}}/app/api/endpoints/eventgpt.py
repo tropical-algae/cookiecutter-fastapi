@@ -3,7 +3,7 @@ from typing import Any
 from fastapi import APIRouter, HTTPException, Request, Security
 
 from {{cookiecutter.project_slug}}.app.api import deps
-from {{cookiecutter.project_slug}}.app.db import schemas
+from {{cookiecutter.project_slug}}.app.db.models import User
 from {{cookiecutter.project_slug}}.app.models.model_eventgpt import (
     EventExtraRequest,
     EventExtraResponse,
@@ -19,7 +19,7 @@ router = APIRouter()
 async def predict(
     data_input: EventExtraRequest,
     request: Request,
-    current_user: schemas.User = Security(deps.get_current_user, scopes=["ADMIN", "USER"]),
+    current_user: User = Security(deps.get_current_user, scopes=["ADMIN", "USER"]),
 ) -> Any:
     model: EventExtraGPT = request.app.state.eventgpt
 

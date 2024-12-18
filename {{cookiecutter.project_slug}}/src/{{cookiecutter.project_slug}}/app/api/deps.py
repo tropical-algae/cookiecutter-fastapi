@@ -5,10 +5,11 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, SecurityScopes
 from jose import jwt
 from pydantic import ValidationError
-from sqlalchemy.orm import Session
+from sqlmodel import Session
 
 from {{cookiecutter.project_slug}}.app.core.constant import CONSTANT
-from {{cookiecutter.project_slug}}.app.db import crud, schemas
+from {{cookiecutter.project_slug}}.app.db import crud
+from {{cookiecutter.project_slug}}.app.db.models import User
 from {{cookiecutter.project_slug}}.app.db.session import LocalSession
 from {{cookiecutter.project_slug}}.app.models import model_user
 from {{cookiecutter.project_slug}}.common.config import settings
@@ -39,7 +40,7 @@ async def get_current_user(
     security_scopes: SecurityScopes,
     db: Session = Depends(get_db),
     token: str = Depends(reusable_oauth2),
-) -> schemas.User:
+) -> User:
     if security_scopes.scopes:
         authenticate_value = f'Bearer scope="{security_scopes.scope_str}"'
     else:
@@ -63,7 +64,7 @@ async def get_current_user(
         logger.error(f"Security verification failed: {err}")
         raise credentials_exception from err
     # get user from db
-    user = crud.user.get_by_full_name(db, full_name=token_data.username)
+    user = crud.get_by_full_name(db, full_name=token_data.username)
     if user is None:  # pragma: no cover
         raise credentials_exception
     # Check whether the permission of the current user is in the allowed permission list

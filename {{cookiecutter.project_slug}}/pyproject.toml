@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "{{cookiecutter.project_name}}"
-version = "{{cookiecutter.version}}"
-description = "{{cookiecutter.project_short_description}}"
-authors = ["{{cookiecutter.author_name}} <{{cookiecutter.email}}>"]
+name = "{{cookiecutter.project_slug}}"
+version = "0.1.0"
+description = "XXX"
+authors = ["AAA <AAA@test.com>"]
 
 
 [tool.poetry.dependencies]
@@ -25,6 +25,7 @@ sqlalchemy = "^2.0.32"
 passlib = "^1.7.4"
 python-jose = "^3.3.0"
 python-multipart = "^0.0.9"
+sqlmodel = "^0.0.22"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2"
@@ -37,6 +38,7 @@ mypy = "^1.11.1"
 ruff = "^0.5.6"
 types-pyyaml = "^6.0.12.20240724"
 types-pytz = "^2024.1.0.20240417"
+sqlacodegen = "3.0.0rc5"
 
 [tool.poetry.group.aws]
 optional = true
@@ -63,6 +65,7 @@ run = { shell = "poetry run python -m {{cookiecutter.project_slug}}.main" }
 check = { sequence = ["_install", "_fix", "_lint", "_format"], ignore_fail = false, help = "Auto-fix and format the code using ruff." }
 test = { sequence = ["_test"]}
 check-test = { sequence = ["check", "_test"]}
+update-db = {shell = "make update-db", help="Auto update local code base on the database."}
 
 [tool.pytest.ini_options]
 testpaths = "tests"
@@ -145,6 +148,7 @@ ignore = [
     "RET504",
     "SIM108",
     "F401",
+    "F403",
     "PT009",
     "PTH103",
     "PTH109",

@@ -28,14 +28,14 @@ make activate
 
 Before starting the project, please complete the configuration first.
 
-[.env.example](.env.example) is a sample configuration, for more configurations, please check [HERE](src/happychat/common/config.py)
+[.env.example](.env.example) is a sample configuration, for more configurations, please check [HERE](src/{{cookiecutter.project_slug}}/common/config.py)
 
 ### Runnning
 
 Start your system with the following command:
 
 ```sh
-poetry run
+poe run
 ```
 
 ### Testing
@@ -43,24 +43,32 @@ poetry run
 The `check` command only performs static checks on the code, including syntax and import checks. The `test` command will perform unit testing. Alternatively, you can choose `check-test` to run them together
 
 ```sh
-poetry check
-poetry test
-poetry check-test
+poe check
+poe test
+poe check-test
 ```
 
 ### Cleaning Cache
 
 ```sh
-poetry clean
+poe clean
 ```
 
 ### Database visioning
 
-When the database schema changes, create a new version promptly.
+When the database schema changes, create a new version promptly. This is an auto function for SQL table build.
 
 ```sh
 alembic upgrade head
 alembic revision --autogenerate -m ""
+```
+
+OR, if you already has a SQL table, you could auto-build sqlmodel BaseModel code by this:
+
+Add the target table you want to build code in Makefile before you run this.
+
+```sh
+poe update-db
 ```
 
 ## Access Swagger Documentation
@@ -75,79 +83,73 @@ Files related to application are in the `src` or `tests` directories.
 
 Overall includes:
 
-    .
-    ├── .env.example
-    ├── .gitignore
-    ├── .pylintrc
-    ├── alembic.ini
-    ├── docker-compose.yml
-    ├── Dockerfile
-    ├── Makefile
-    ├── poetry.lock
-    ├── poetry.toml
-    ├── pyproject.toml
-    ├── README.md
-    ├── src
-    │   └── happychat
-    │       ├── alembic
-    │       │   ├── env.py
-    │       │   ├── README
-    │       │   ├── script.py.mako
-    │       │   └── versions
-    │       │       └── 5ebcc51b7b42_update_create_user_table.py
-    │       ├── app
-    │       │   ├── api
-    │       │   │   ├── api.py
-    │       │   │   ├── deps.py
-    │       │   │   ├── __init__.py
-    │       │   │   └── routes
-    │       │   │       ├── eventgpt.py
-    │       │   │       ├── __init__.py
-    │       │   │       └── user.py
-    │       │   ├── core
-    │       │   │   ├── constant.py
-    │       │   │   ├── errors.py
-    │       │   │   ├── events.py
-    │       │   │   ├── __init__.py
-    │       │   │   └── security.py
-    │       │   ├── db
-    │       │   │   ├── crud
-    │       │   │   │   ├── base.py
-    │       │   │   │   ├── crud_user.py
-    │       │   │   │   └── __init__.py
-    │       │   │   ├── __init__.py
-    │       │   │   ├── schemas
-    │       │   │   │   ├── base.py
-    │       │   │   │   ├── __init__.py
-    │       │   │   │   └── schema_user.py
-    │       │   │   └── session.py
-    │       │   ├── __init__.py
-    │       │   ├── models
-    │       │   │   ├── __init__.py
-    │       │   │   ├── model_eventgpt.py
-    │       │   │   └── model_user.py
-    │       │   └── services
-    │       │       ├── __init__.py
-    │       │       └── service_eventgpt.py
-    │       ├── common
-    │       │   ├── config.py
-    │       │   ├── __init__.py
-    │       │   ├── logging.py
-    │       │   └── util.py
-    │       ├── __init__.py
-    │       ├── main.py
-    │       └── service
-    │           ├── __init__.py
-    │           ├── llm
-    │           │   ├── base.py
-    │           │   ├── __init__.py
-    │           │   └── openai.py
-    │           └── prompts
-    │               └── eventgpt_prompt.yaml
-    └── tests
-        ├── api
-        │   ├── __init__.py
-        │   ├── test_eventgpt.py
-        │   └── test_user.py
-        ├── conftest.py
-        └── __init__.py
+.
+├── alembic.ini
+├── docker-compose.yml
+├── Dockerfile
+├── Makefile
+├── notebooks
+├── poetry.lock
+├── poetry.toml
+├── pyproject.toml
+├── README.md
+├── src
+│   └── {{cookiecutter.project_slug}}
+│       ├── alembic
+│       │   ├── env.py
+│       │   ├── README
+│       │   ├── script.py.mako
+│       │   └── versions
+│       │       └── 62c8f0fbfb56_generate_uesr_db.py
+│       ├── app
+│       │   ├── api
+│       │   │   ├── deps.py
+│       │   │   ├── endpoints
+│       │   │   │   ├── eventgpt.py
+│       │   │   │   ├── __init__.py
+│       │   │   │   └── user.py
+│       │   │   ├── __init__.py
+│       │   │   └── routers.py
+│       │   ├── core
+│       │   │   ├── constant.py
+│       │   │   ├── errors.py
+│       │   │   ├── events.py
+│       │   │   ├── __init__.py
+│       │   │   └── security.py
+│       │   ├── db
+│       │   │   ├── crud
+│       │   │   │   ├── crud_user.py
+│       │   │   │   └── __init__.py
+│       │   │   ├── __init__.py
+│       │   │   ├── models.py
+│       │   │   └── session.py
+│       │   ├── __init__.py
+│       │   ├── models
+│       │   │   ├── __init__.py
+│       │   │   ├── model_eventgpt.py
+│       │   │   └── model_user.py
+│       │   └── services
+│       │       ├── __init__.py
+│       │       └── service_eventgpt.py
+│       ├── common
+│       │   ├── config.py
+│       │   ├── __init__.py
+│       │   ├── logging.py
+│       │   └── util.py
+│       ├── __init__.py
+│       ├── main.py
+│       └── service
+│           ├── __init__.py
+│           ├── llm
+│           │   ├── base.py
+│           │   ├── __init__.py
+│           │   └── openai.py
+│           └── prompts
+│               └── eventgpt_prompt.yaml
+└── tests
+    ├── api
+    │   ├── __init__.py
+    │   ├── test_eventgpt.py
+    │   └── test_user.py
+    ├── conftest.py
+    └── __init__.py

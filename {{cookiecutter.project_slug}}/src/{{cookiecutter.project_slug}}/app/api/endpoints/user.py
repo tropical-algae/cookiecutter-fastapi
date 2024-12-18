@@ -5,12 +5,15 @@ from typing import Any
 import pytz
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy.orm import Session
+from sqlmodel import Session
 
 from {{cookiecutter.project_slug}}.app.api.deps import get_current_user, get_db
 from {{cookiecutter.project_slug}}.app.core import security
 from {{cookiecutter.project_slug}}.app.core.constant import CONSTANT
-from {{cookiecutter.project_slug}}.app.db import crud, schemas
+from {{cookiecutter.project_slug}}.app.db import crud
+
+# from {{cookiecutter.project_slug}}.app.db.crud.select import select_all_user
+from {{cookiecutter.project_slug}}.app.db.models import User
 from {{cookiecutter.project_slug}}.app.models.model_user import Token, UserBase
 from {{cookiecutter.project_slug}}.common.config import settings
 
@@ -22,7 +25,7 @@ async def login_access_token(db: Session = Depends(get_db), form_data: OAuth2Pas
     """
     OAuth2 compatible token login, get an access token for future requests
     """
-    user = crud.user.authenticate(db, full_name=form_data.username, password=form_data.password)
+    user = crud.authenticate_user(db, full_name=form_data.username, password=form_data.password)
     if not user:
         raise HTTPException(status_code=400, detail="Token校验失败")
     scopes = json.loads(str(user.scopes))
@@ -46,7 +49,7 @@ async def login_access_token(db: Session = Depends(get_db), form_data: OAuth2Pas
 
 
 @router.post("/test-token", response_model=UserBase)
-async def token_test(current_user: schemas.User = Depends(get_current_user)) -> Any:
+async def token_test(current_user: User = Depends(get_current_user)) -> Any:
     """
     Test access token
     """

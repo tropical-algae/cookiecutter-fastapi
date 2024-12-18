@@ -47,3 +47,10 @@ clean:
 	rm -rf .mypy_cache;
 	rm -rf .ruff_cache;
 	rm -rf .cache;
+
+update-db:
+	sqlacodegen --generator sqlmodels \
+    --tables \
+        user \
+    --outfile ./src/{{cookiecutter.project_slug}}/app/db/models.py \
+    ${SQL_DATABASE_URI}

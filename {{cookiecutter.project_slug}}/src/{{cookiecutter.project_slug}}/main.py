@@ -5,7 +5,7 @@ from alembic import command
 from alembic.config import Config
 from fastapi import FastAPI
 
-from {{cookiecutter.project_slug}}.app.api.api import router as api_router
+from {{cookiecutter.project_slug}}.app.api.routers import router as api_router
 from {{cookiecutter.project_slug}}.app.core.errors import add_exception_handler
 from {{cookiecutter.project_slug}}.app.core.events import add_middleware, lifespan
 from {{cookiecutter.project_slug}}.common.config import settings
