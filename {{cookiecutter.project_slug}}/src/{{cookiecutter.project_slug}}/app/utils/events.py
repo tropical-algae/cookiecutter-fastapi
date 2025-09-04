@@ -14,7 +14,6 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 
 from {{cookiecutter.project_slug}}.common.config import settings
-from {{cookiecutter.project_slug}}.service.llm.openai import EventExtraGPT
 
 origins = ["*"]
 
@@ -46,13 +45,7 @@ def resp_error(response_body: dict) -> Response:
 @asynccontextmanager
 async def lifespan(app: FastAPI, logger: logging.Logger):
     logger.info("Starting service...")
-    logger.info("Loading event extraction model...")
-    app.state.eventgpt = EventExtraGPT(
-        base_url=settings.GPT_BASE_URL,
-        api_key=settings.GPT_API_KEY,
-        prompt_path=settings.GPT_PROMPT_TEMPLATE_PATH,
-        default_model=settings.GPT_DEFAULT_MODEL,
-    )
+    _ = app
 
     yield
     logger.info("Shut down and clear cache...")

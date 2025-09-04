@@ -6,7 +6,9 @@ from passlib.hash import pbkdf2_sha256
 from {{cookiecutter.project_slug}}.common.config import settings
 
 
-def create_access_token(data: dict, expires_delta: timedelta = timedelta(minutes=30)) -> str:
+def create_access_token(
+    data: dict, expires_delta: timedelta = timedelta(minutes=30)
+) -> str:
     to_encode = data.copy()
     expire = datetime.now(timezone.utc) + expires_delta
     to_encode.update({"exp": expire})

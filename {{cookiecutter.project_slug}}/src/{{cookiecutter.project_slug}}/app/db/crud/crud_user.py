@@ -1,11 +1,11 @@
 import json
 import uuid
+from copy import deepcopy
 
-# from fastapi.encoders import jsonable_encoder
 from sqlmodel import Session, select
 
-from {{cookiecutter.project_slug}}.app.core.security import get_password_hash, verify_password
 from {{cookiecutter.project_slug}}.app.db.models import User
+from {{cookiecutter.project_slug}}.app.utils.security import get_password_hash, verify_password
 
 
 def select_all_user(db: Session) -> list[User]:
@@ -21,26 +21,24 @@ def get_by_full_name(db: Session, full_name: str | None) -> User | None:
 
 
 def create_user(db: Session, user: User):
-    db_obj = User(  # type: ignore
-        id=user.id if user.id is not None else uuid.uuid4().hex,
-        email=user.email,
-        password=get_password_hash(user.password),
-        full_name=user.full_name,
-        is_superuser=user.is_superuser,
-        scopes=json.dumps(["USER"]),
-        profile=user.profile,
-    )
-    db.add(db_obj)
+    user.password = get_password_hash(user.password)
+    user.id = user.id or uuid.uuid4().hex
+
+    db.add(user)
     db.commit()
-    db.refresh(db_obj)
-    return db_obj
+    db.refresh(user)
+    return user
 
 
 def update_user(db: Session, *, user_id: str, update_attr: dict) -> User | None:
     user = db.get(User, ident=user_id)
     if user:
         user.email = update_attr.get("email", user.email)
-        user.password = get_password_hash(update_attr["password"]) if update_attr.get("passwd") else user.password
+        user.password = (
+            get_password_hash(update_attr["password"])
+            if update_attr.get("passwd")
+            else user.password
+        )
         user.full_name = update_attr.get("full_name", user.full_name)
 
         db.add(user)

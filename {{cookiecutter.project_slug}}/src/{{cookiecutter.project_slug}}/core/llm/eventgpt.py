@@ -1,7 +1,8 @@
 from typing import Optional
 
+from {{cookiecutter.project_slug}}.common.config import settings
 from {{cookiecutter.project_slug}}.common.logging import logger
-from {{cookiecutter.project_slug}}.service.llm.base import OpenAIBase
+from {{cookiecutter.project_slug}}.core.llm.base import OpenAIBase
 
 
 class EventExtraGPT(OpenAIBase):
@@ -14,3 +15,11 @@ class EventExtraGPT(OpenAIBase):
 
         logger.info(f"GPT output: {output}")
         return output
+
+
+event_extra = EventExtraGPT(
+    base_url=settings.GPT_BASE_URL,
+    api_key=settings.GPT_API_KEY,
+    prompt_path=settings.GPT_PROMPT_TEMPLATE_PATH,
+    default_model=settings.GPT_DEFAULT_MODEL,
+)

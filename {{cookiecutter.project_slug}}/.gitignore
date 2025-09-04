@@ -89,5 +89,10 @@ target/
 *.swp
 *.swo
 
-# Mypy cache
+# cache
 .mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# venv
+.venv/

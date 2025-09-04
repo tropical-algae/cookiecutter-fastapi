@@ -1,4 +1,4 @@
-# {{cookiecutter.project_name}}
+# {{cookiecutter.project_slug}}
 
 {{cookiecutter.project_short_description}}
 
@@ -56,16 +56,7 @@ poe clean
 
 ### Database visioning
 
-When the database schema changes, create a new version promptly. This is an auto function for SQL table build.
-
-```sh
-alembic upgrade head
-alembic revision --autogenerate -m ""
-```
-
-OR, if you already has a SQL table, you could auto-build sqlmodel BaseModel code by this:
-
-Add the target table you want to build code in Makefile before you run this.
+Add the SQL table in part of 'update-db' in Makefile, then run this to generate code of table.
 
 ```sh
 poe update-db
@@ -83,73 +74,76 @@ Files related to application are in the `src` or `tests` directories.
 
 Overall includes:
 
+```
 .
-├── alembic.ini
-├── docker-compose.yml
+├── CHANGELOG.md
 ├── Dockerfile
 ├── Makefile
-├── notebooks
+├── README.md
+├── asset
+│   └── prompts
+│       └── eventgpt_prompt.yaml
+├── docker-compose.yml
+├── mypy.ini
+├── poe_tasks.toml
 ├── poetry.lock
 ├── poetry.toml
 ├── pyproject.toml
-├── README.md
+├── pytest.ini
+├── ruff.toml
+├── semantic.toml
 ├── src
 │   └── {{cookiecutter.project_slug}}
-│       ├── alembic
-│       │   ├── env.py
-│       │   ├── README
-│       │   ├── script.py.mako
-│       │   └── versions
-│       │       └── 62c8f0fbfb56_generate_uesr_db.py
+│       ├── __init__.py
 │       ├── app
+│       │   ├── __init__.py
 │       │   ├── api
+│       │   │   ├── __init__.py
 │       │   │   ├── deps.py
 │       │   │   ├── endpoints
-│       │   │   │   ├── eventgpt.py
 │       │   │   │   ├── __init__.py
+│       │   │   │   ├── eventgpt.py
 │       │   │   │   └── user.py
-│       │   │   ├── __init__.py
 │       │   │   └── routers.py
-│       │   ├── core
-│       │   │   ├── constant.py
-│       │   │   ├── errors.py
-│       │   │   ├── events.py
-│       │   │   ├── __init__.py
-│       │   │   └── security.py
 │       │   ├── db
-│       │   │   ├── crud
-│       │   │   │   ├── crud_user.py
-│       │   │   │   └── __init__.py
 │       │   │   ├── __init__.py
+│       │   │   ├── crud
+│       │   │   │   ├── __init__.py
+│       │   │   │   └── crud_user.py
 │       │   │   ├── models.py
 │       │   │   └── session.py
-│       │   ├── __init__.py
-│       │   ├── models
+│       │   ├── services
 │       │   │   ├── __init__.py
-│       │   │   ├── model_eventgpt.py
-│       │   │   └── model_user.py
-│       │   └── services
+│       │   │   └── eventgpt.py
+│       │   └── utils
 │       │       ├── __init__.py
-│       │       └── service_eventgpt.py
+│       │       ├── constant.py
+│       │       ├── errors.py
+│       │       ├── events.py
+│       │       └── security.py
 │       ├── common
-│       │   ├── config.py
 │       │   ├── __init__.py
+│       │   ├── config.py
 │       │   ├── logging.py
+│       │   ├── model
+│       │   │   ├── __init__.py
+│       │   │   ├── eventgpt.py
+│       │   │   └── user.py
 │       │   └── util.py
-│       ├── __init__.py
-│       ├── main.py
-│       └── service
-│           ├── __init__.py
-│           ├── llm
-│           │   ├── base.py
-│           │   ├── __init__.py
-│           │   └── openai.py
-│           └── prompts
-│               └── eventgpt_prompt.yaml
+│       ├── core
+│       │   ├── __init__.py
+│       │   └── llm
+│       │       ├── __init__.py
+│       │       ├── base.py
+│       │       └── eventgpt.py
+│       └── main.py
 └── tests
+    ├── __init__.py
     ├── api
     │   ├── __init__.py
     │   ├── test_eventgpt.py
     │   └── test_user.py
-    ├── conftest.py
-    └── __init__.py
+    └── conftest.py
+
+
+```

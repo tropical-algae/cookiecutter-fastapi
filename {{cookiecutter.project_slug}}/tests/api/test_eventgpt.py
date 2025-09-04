@@ -1,6 +1,6 @@
 import pytest
-from fastapi.testclient import TestClient
 from {{cookiecutter.project_slug}}.common.config import settings
+from fastapi.testclient import TestClient
 
 from tests.conftest import DataStore
 

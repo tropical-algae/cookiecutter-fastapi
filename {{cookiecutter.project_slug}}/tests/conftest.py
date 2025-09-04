@@ -2,9 +2,8 @@ from collections.abc import Generator
 from typing import Optional
 
 import pytest
-from fastapi.testclient import TestClient
-from {{cookiecutter.project_slug}}.app.db.schemas.schema_user import User
 from {{cookiecutter.project_slug}}.main import app
+from fastapi.testclient import TestClient
 from pydantic import BaseModel
 
 

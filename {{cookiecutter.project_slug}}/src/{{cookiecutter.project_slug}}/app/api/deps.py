@@ -7,13 +7,13 @@ from jose import jwt
 from pydantic import ValidationError
 from sqlmodel import Session
 
-from {{cookiecutter.project_slug}}.app.core.constant import CONSTANT
-from {{cookiecutter.project_slug}}.app.db import crud
+from {{cookiecutter.project_slug}}.app.db.crud import get_by_full_name
 from {{cookiecutter.project_slug}}.app.db.models import User
 from {{cookiecutter.project_slug}}.app.db.session import LocalSession
-from {{cookiecutter.project_slug}}.app.models import model_user
+from {{cookiecutter.project_slug}}.app.utils.constant import CONSTANT
 from {{cookiecutter.project_slug}}.common.config import settings
 from {{cookiecutter.project_slug}}.common.logging import logger
+from {{cookiecutter.project_slug}}.common.model.user import TokenData
 
 reusable_oauth2 = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_PREFIX}/user/access-token",
@@ -59,16 +59,18 @@ async def get_current_user(
         if username is None:
             raise credentials_exception  # pragma: no cover
         token_scopes = payload.get("scopes", [])
-        token_data = model_user.TokenData(scopes=token_scopes, username=username, id=userid)
+        token_data = TokenData(scopes=token_scopes, username=username, id=userid)
     except (jose.exceptions.JWTError, ValidationError) as err:
         logger.error(f"Security verification failed: {err}")
         raise credentials_exception from err
     # get user from db
-    user = crud.get_by_full_name(db, full_name=token_data.username)
+    user = get_by_full_name(db, full_name=token_data.username)
     if user is None:  # pragma: no cover
         raise credentials_exception
     # Check whether the permission of the current user is in the allowed permission list
-    if len(security_scopes.scopes) != 0 and not any(sc in security_scopes.scopes for sc in token_data.scopes):
+    if len(security_scopes.scopes) != 0 and not any(
+        sc in security_scopes.scopes for sc in token_data.scopes
+    ):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=CONSTANT.USER_NOT_ENOUGH_PERMISSION,

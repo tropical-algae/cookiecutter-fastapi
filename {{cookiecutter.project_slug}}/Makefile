@@ -8,9 +8,11 @@ all: clean test install run deploy down
 
 install: generate_dot_env
 	pip install --upgrade pip
-	pip install poetry
+	pip install poetry==1.8.5
 	poetry update
 	poetry install --with dev
+	[ -d .git ] || git init
+	poetry run pre-commit install
 	poetry shell
 
 activate:

@@ -1,0 +1,33 @@
+name: detection
+
+on:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+    branches-ignore:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  detection:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup | Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup | Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y git
+          pip install pre-commit==4.3.0
+
+      - name: Run pre-commit checks
+        run: |
+          pre-commit run --all-files --show-diff-on-failure

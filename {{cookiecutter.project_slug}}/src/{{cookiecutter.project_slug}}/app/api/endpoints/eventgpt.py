@@ -2,15 +2,15 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException, Request, Security
 
-from {{cookiecutter.project_slug}}.app.api import deps
+from {{cookiecutter.project_slug}}.app.api.deps import get_current_user
 from {{cookiecutter.project_slug}}.app.db.models import User
-from {{cookiecutter.project_slug}}.app.models.model_eventgpt import (
+from {{cookiecutter.project_slug}}.app.services.eventgpt import parse_event_2_dict
+from {{cookiecutter.project_slug}}.common.logging import logger
+from {{cookiecutter.project_slug}}.common.model.eventgpt import (
     EventExtraRequest,
     EventExtraResponse,
 )
-from {{cookiecutter.project_slug}}.app.services.service_eventgpt import parse_event_2_dict
-from {{cookiecutter.project_slug}}.common.logging import logger
-from {{cookiecutter.project_slug}}.service.llm.openai import EventExtraGPT
+from {{cookiecutter.project_slug}}.core.llm.eventgpt import EventExtraGPT, event_extra
 
 router = APIRouter()
 
@@ -18,13 +18,12 @@ router = APIRouter()
 @router.post("/complete", response_model=EventExtraResponse)
 async def predict(
     data_input: EventExtraRequest,
-    request: Request,
-    current_user: User = Security(deps.get_current_user, scopes=["ADMIN", "USER"]),
+    current_user: User = Security(get_current_user, scopes=["ADMIN", "USER"]),
 ) -> Any:
-    model: EventExtraGPT = request.app.state.eventgpt
-
     try:
-        output = await parse_event_2_dict(model=model, request=data_input, user=current_user)
+        output = await parse_event_2_dict(
+            model=event_extra, request=data_input, user=current_user
+        )
         if output is None:
             raise HTTPException(
                 status_code=500,

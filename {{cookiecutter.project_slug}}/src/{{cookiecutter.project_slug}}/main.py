@@ -1,13 +1,11 @@
 from functools import partial
 
 import uvicorn
-from alembic import command
-from alembic.config import Config
 from fastapi import FastAPI
 
 from {{cookiecutter.project_slug}}.app.api.routers import router as api_router
-from {{cookiecutter.project_slug}}.app.core.errors import add_exception_handler
-from {{cookiecutter.project_slug}}.app.core.events import add_middleware, lifespan
+from {{cookiecutter.project_slug}}.app.utils.errors import add_exception_handler
+from {{cookiecutter.project_slug}}.app.utils.events import add_middleware, lifespan
 from {{cookiecutter.project_slug}}.common.config import settings
 from {{cookiecutter.project_slug}}.common.logging import get_uvicorn_logger_config, logger
 
@@ -23,7 +21,6 @@ add_exception_handler(app=app)
 
 
 def run() -> None:
-    command.upgrade(Config("alembic.ini"), "head")
     uvicorn.run(
         "{{cookiecutter.project_slug}}.main:app",
         host=settings.HOST,

@@ -28,4 +28,4 @@ pip install cookiecutter
 cookiecutter https://github.com/tropical-algae/cookiecutter-fastapi.git
 ```
 
-![image](https://github.com/tropical-algae/cookiecutter-fastapi/blob/main/assert/example.png)
+![image](https://github.com/tropical-algae/cookiecutter-fastapi/blob/main/asset/example.png)

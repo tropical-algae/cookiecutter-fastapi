@@ -62,11 +62,15 @@ class OpenAIBase:
     #     response = completion.choices[0].message.content
     #     return response or "None"
 
-    async def _async_inference(self, content: str, model: Optional[str] = None, **kwargs) -> str:
+    async def _async_inference(
+        self, content: str, model: Optional[str] = None, **kwargs
+    ) -> str:
         model = model or self.default_model
 
         messages = [ChatCompletionUserMessageParam(content=content, role="user")]
-        completion = await self.async_client.chat.completions.create(messages=messages, model=model, **kwargs)
+        completion = await self.async_client.chat.completions.create(
+            messages=messages, model=model, **kwargs
+        )
 
         response = completion.choices[-1].message.content
         return response or "None"

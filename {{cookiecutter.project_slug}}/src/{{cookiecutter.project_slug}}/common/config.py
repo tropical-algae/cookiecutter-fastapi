@@ -20,11 +20,6 @@ class DBSetting(BaseSettings):
     # database
     SQL_DATABASE_URI: str = ""
 
-    # user
-    SECRET_KEY: str = secrets.token_urlsafe(32)
-    DEFAULT_SUPERUSER: str = "admin"
-    DEFAULT_SUPERUSER_PASSWD: str = "admin"
-
 
 class LogSetting(BaseSettings):
     # logger
