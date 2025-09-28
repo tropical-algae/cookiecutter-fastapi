@@ -42,8 +42,6 @@ output_format = "md"
 mask_initial_release = false
 
 [semantic_release.changelog.environment]
-block_start_string = "{%"
-block_end_string = "%}"
 variable_start_string = "{{"
 variable_end_string = "}}"
 comment_start_string = "{#"
