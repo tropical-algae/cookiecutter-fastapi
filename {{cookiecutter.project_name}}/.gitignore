@@ -96,6 +96,6 @@ target/
 
 # venv
 .venv/
-cache/
+cache/!.*
 cov.xml
 report.xml
