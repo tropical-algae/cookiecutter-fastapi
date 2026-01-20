@@ -1,9 +1,9 @@
 {
   "project_name": "The name of your project",
-  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
   "project_short_description": "The description of your project",
   "github_repository": "The url of project repository in github",
   "author_name": "Your name",
-  "email": "Your email",
+  "email": "{{ cookiecutter.author_name }}@gmail.com",
   "version": "0.1.0"
 }
