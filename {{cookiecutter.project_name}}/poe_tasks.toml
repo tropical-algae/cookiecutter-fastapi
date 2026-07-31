@@ -31,7 +31,7 @@ help = "Run tests quickly using the default Python environment."
 sequence = ["_test"]
 
 
-[tasks.check-test]
+[tasks.test-all]
 help = "Run test and auto-fix the code."
 sequence = ["check", "_test"]
 
